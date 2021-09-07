@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity 0.7.5;
+pragma abicoder v2;
+
+
+contract SaveGas {
+    //external VS public
+    function testExternal(uint[10] calldata numbers) external returns (uint) {
+        return numbers[0];
+    }
+    function testPublic(uint[10] memory numbers) public returns (uint) {
+        return numbers[0];
+    }    
+
+    //Pure vs view vs changng state variable - changng state on blockchain
+    uint[5] number = [10,9,8,7,6];
+    
+    function testPure(uint[5] memory numbers) public pure returns (uint) {
+        return numbers[0];
+    }    
+    function testPure2(uint[5] memory numbers) public pure returns (uint) {
+        numbers[0] = 10;
+        return numbers[0];
+    }
+    function testView(uint[5] memory numbers) public view returns (uint) {
+        numbers[0] = number[0];
+        return numbers[0];
+    }
+    function testChanheState(uint[5] memory numbers) public  returns (uint) {
+        for(uint i=0; i<5; i++){
+            number[i] = numbers[i];
+        }
+        return numbers[0];
+    }
+}
